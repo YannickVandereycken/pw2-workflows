@@ -1,0 +1,39 @@
+name: Classic linear deployment
+on:
+  workflow_call:
+    outputs:
+      changed:
+        description: 'True if pipeline passes'
+        value: ${{ jobs.changes.outputs.changed }}
+    inputs:
+      image-name:
+        description: 'The base name of the image'
+        required: true
+        default: 'image'
+        type: string
+      tag:
+        description: 'The tag of the image'
+        required: true
+        default: 'latest'
+        type: string
+
+jobs:
+  changes:
+    name: Preflight checks
+    uses: Projectweek-2022-2023/workflows/.github/workflows/check-changes.yml@main
+    secrets: inherit
+  
+  testing:
+    needs: changes
+    if: ${{ needs.changes.outputs.changed == 'true' }}
+    uses: Projectweek-2022-2023/workflows/.github/workflows/test-mvn.yml@main
+    secrets: inherit
+
+  build-image:
+    needs: [changes, testing]
+    uses: Projectweek-2022-2023/workflows/.github/workflows/build-image.yml@main
+    secrets: inherit
+    with:
+      image-name: ${{ inputs.image-name }}
+      tag: ${{ inputs.tag }}
+  
