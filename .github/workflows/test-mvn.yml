@@ -37,4 +37,11 @@ jobs:
           name: Tested war
           path: target/*.war
           retention-days: 1
-      
+      - name: return when tests pass
+        if: ${{ success() }}
+        run: |
+          echo "::set-output name=passed::true"
+      - name: return when tests fail
+        if: ${{ failure() }}
+        run: |
+          echo "::set-output name=passed::false"

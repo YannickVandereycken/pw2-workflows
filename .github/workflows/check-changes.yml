@@ -38,13 +38,6 @@ jobs:
               src/**
               .github/**
 
-      - name: Checking github ci folder for changes
-        id: debug-check
-        uses: tj-actions/changed-files@v34
-        with:
-          files: |
-            .github/**
-            
       - name: Send results into workflow outputs
         id: report
         run: |
