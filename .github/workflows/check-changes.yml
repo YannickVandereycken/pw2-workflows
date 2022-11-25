@@ -1,0 +1,52 @@
+name: Check for valid changes
+on:
+  workflow_call:
+    outputs:
+      changed:
+        description: 'True if there are changes, false otherwise'
+        value: ${{ jobs.changes.outputs.changed }}
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.report.outputs.changed }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: check if Secret.java exists
+        id: check_files
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "src/main/java/util/Secret.java"
+      - name: Check if Secret exists
+        if: steps.check_files.outputs.files_exists == 'true' ## if Secret.java does not exist!
+        # Only runs if all of the files exists
+        run: |
+          echo "::error file=src/main/java/util/Secret.java, title=Secret.java file is missing ::Missing Secret.java file, tests will fail"
+          exit 1
+          
+      - name: Checking src folder for changes
+        id: src-check
+        uses: tj-actions/changed-files@v34
+        with:
+            files: |
+              src/**
+              .github/**
+
+      - name: Checking github ci folder for changes
+        id: debug-check
+        uses: tj-actions/changed-files@v34
+        with:
+          files: |
+            .github/**
+            
+      - name: Send results into workflow outputs
+        id: report
+        run: |
+          echo "${{ github.ref_name }}"
+          echo "::set-output name=changed::${{ steps.src-check.outputs.any_changed }}"
