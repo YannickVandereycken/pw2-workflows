@@ -19,14 +19,6 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: 'maven'
-      # - name: Cache local Maven repository
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.m2/repository
-      #     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-      #       ${{ runner.os }}-maven-
   # Step that runs the tests
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipTests
@@ -40,12 +32,12 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          junit_files: "target/**/*.xml"
+          junit_files: "target/surefire-reports/**/*.xml"
       - name: Upload artifacts
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: Tested war
+          name: Tested War
           path: target/*.war
           retention-days: 1
       - name: return when tests pass
