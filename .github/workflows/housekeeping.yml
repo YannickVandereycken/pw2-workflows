@@ -1,12 +1,11 @@
-name: Relabeling image
-
+name: cleaning up the mess
 on:
   workflow_call:
     outputs:
       changed:
         description: 'True if passed, false otherwise'
         value: ${{ jobs.housekeeping.outputs.passed }}
-      
+
 jobs:
   housekeeping:
     runs-on: ubuntu-latest
@@ -20,15 +19,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: housekeeping
-        uses: vlaurin/action-ghcr-prune@main
+        uses: bots-house/ghcr-delete-image-action@v1.0.0
         with:
+          # NOTE: at now only orgs is supported
+          owner: ${{ github.repository_owner }}
+          name: candidate
+          # NOTE: using Personal Access Token
           token: ${{ secrets.GITHUB_TOKEN }}
-          organization: ${{ github.repository_owner }}
-          container: candidate
-          dry-run: true # Dry-run first, then change to `false`
-          older-than: 1
-          keep-last: 2
-          untagged: true
+          tag: ${{github.sha}}
         
       - name: return when fail
         if: ${{ failure() }}
