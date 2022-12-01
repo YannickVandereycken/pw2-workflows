@@ -51,6 +51,6 @@ jobs:
   housekeeping:
     name: housekeeping
     needs: [build-candidate, publish-candidate]
-    if: ${{ needs.build-candidate.outputs.changed == 'true' }}
+    if: always() #assuming we can't delete stuff with the token, we're just gonna push a hello-world image over it since it's only 11kb
     uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
     secrets: inherit
