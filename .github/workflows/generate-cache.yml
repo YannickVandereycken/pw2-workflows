@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
       - name: copy dummy file
         run: |
-          cp .github/helpes/dummy_secret.java src/main/java/util/Secret.java
+          cp .github/helpers/dummy_secret.java src/main/java/util/Secret.java
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
