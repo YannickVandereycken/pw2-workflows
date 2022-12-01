@@ -1,4 +1,4 @@
-name: Building and pushing image
+name: Relabeling image
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
       image-name:
         description: 'The base name of the image'
         required: true
-        default: 'candidate'
+        default: 'canary'
         type: string
       tag:
         description: 'The tag of the image'
@@ -41,7 +41,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: fetch from cache and push
+      # yeah so this is actually faster then pulling from artifacts...
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -52,11 +53,17 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
 
-      - name: return when tests fail
+      - name: cleaning up 
+        uses: actions/delete-package-versions@v3
+        with: 
+          package-name: 'candidate'
+          min-versions-to-keep: 3
+        
+      - name: return when fail
         if: ${{ failure() }}
         run: |
           echo "::set-output name=passed::false"
-      - name: return when tests pass
+      - name: return when pass
         if: ${{ success() }}
         run: |
           echo "::set-output name=passed::true"

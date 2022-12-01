@@ -18,21 +18,13 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: 'maven'
-      # - name: Cache local Maven repository
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.m2/repository
-      #     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-      #       ${{ runner.os }}-maven-
       - name: Building project to get the cache
         run: mvn -B install --file pom.xml -DskipTests
-      - name: return when tests pass
+      - name: return when cache is built
         if: ${{ success() }}
         run: |
           echo "::set-output name=passed::true"
-      - name: return when tests fail
+      - name: return when cache isnt built
         if: ${{ failure() }}
         run: |
           echo "::set-output name=passed::false"

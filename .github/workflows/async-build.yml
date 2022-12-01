@@ -1,4 +1,5 @@
-name: Classic linear deployment
+name: Async build
+# This checks if we can compile and then tests/builds at the same time. If build and test pass, it pushes the image. 'Harder' but faster overall.
 on:
   workflow_call:
     outputs:
@@ -9,7 +10,7 @@ on:
       image-name:
         description: 'The base name of the image'
         required: true
-        default: 'image'
+        default: 'canary'
         type: string
       tag:
         description: 'The tag of the image'
@@ -29,9 +30,19 @@ jobs:
     uses: Projectweek-2022-2023/workflows/.github/workflows/test-mvn.yml@main
     secrets: inherit
 
-  build-image:
-    needs: [changes, testing]
+  build-candidate:
+    needs: changes
     uses: Projectweek-2022-2023/workflows/.github/workflows/build-image.yml@main
+    secrets: inherit
+    with:
+      image-name: candidate
+      tag: ${{ github.sha }}
+  
+  cleanup-registry:
+    name: cleaning up and pushing
+    needs: [testing, build-image]
+    if: ${{ needs.changes.outputs.changed == 'true' }}
+    uses: Projectweek-2022-2023/workflows/.github/workflows/cleanup-image.yml@main
     secrets: inherit
     with:
       image-name: ${{ inputs.image-name }}
