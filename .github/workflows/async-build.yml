@@ -40,7 +40,7 @@ jobs:
   
   cleanup-registry:
     name: cleaning up and pushing
-    needs: [testing, build-image]
+    needs: [testing, build-candidate]
     if: ${{ needs.changes.outputs.changed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/cleanup-image.yml@main
     secrets: inherit
