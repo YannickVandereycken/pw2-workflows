@@ -41,7 +41,7 @@ jobs:
   publish-candidate:
     name: relabeling and pushing target
     needs: [testing, build-candidate]
-    if: ${{ needs.testing.outputs.passed == 'true' }}
+    if: always()
     uses: Projectweek-2022-2023/workflows/.github/workflows/relabel-image.yml@main
     secrets: inherit
     with:
