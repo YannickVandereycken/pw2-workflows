@@ -48,9 +48,9 @@ jobs:
       image-name: ${{ inputs.image-name }}
       tag: ${{ inputs.tag }}
 
-  housekeeping:
-    name: housekeeping
-    needs: [build-candidate, publish-candidate] #always happens, we just need to wait for these to wrap up
-    if: always() #assuming we can't delete stuff with the token, we're just gonna push a hello-world image over it since it's only 11kb
-    uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
-    secrets: inherit
+  # housekeeping:
+  #   name: housekeeping
+  #   needs: [build-candidate, publish-candidate] #always happens, we just need to wait for these to wrap up
+  #   if: always() #assuming we can't delete stuff with the token, we're just gonna push a hello-world image over it since it's only 11kb
+  #   uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
+  #   secrets: inherit

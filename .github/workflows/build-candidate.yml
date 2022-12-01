@@ -10,7 +10,7 @@ on:
       image-name:
         description: 'The base name of the image'
         required: true
-        default: 'canary'
+        default: 'candidate'
         type: string
       tag:
         description: 'The tag of the image'
@@ -46,11 +46,12 @@ jobs:
         with:
           context: .
           platforms: linux/amd64
-          push: true
+          push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
+            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:latest
 
       - name: return when tests fail
         if: ${{ failure() }}
