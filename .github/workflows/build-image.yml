@@ -50,8 +50,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:latest
+            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
 
       - name: return when tests fail
         if: ${{ failure() }}

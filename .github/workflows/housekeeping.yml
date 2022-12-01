@@ -23,7 +23,7 @@ jobs:
         uses: actions/delete-package-versions@v3
         with: 
           package-name: 'candidate'
-          min-versions-to-keep: 3
+          min-versions-to-keep: 1
         
       - name: return when fail
         if: ${{ failure() }}
