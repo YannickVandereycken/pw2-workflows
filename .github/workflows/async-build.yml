@@ -50,7 +50,7 @@ jobs:
 
   housekeeping:
     name: housekeeping
-    needs: [testing, build-candidate, publish-candidate]
+    needs: [build-candidate, publish-candidate]
     if: ${{ needs.build-candidate.outputs.changed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
     secrets: inherit
