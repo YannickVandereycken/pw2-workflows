@@ -37,7 +37,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ github.sha }}
+            ghcr.io/${{ env.REPO }}/candidate:${{ github.sha }}
 
       - name: return when fail
         if: ${{ failure() }}
