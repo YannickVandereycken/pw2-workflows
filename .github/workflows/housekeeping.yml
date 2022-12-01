@@ -19,11 +19,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: cleaning up 
-        uses: actions/delete-package-versions@v3
-        with: 
-          package-name: 'candidate'
-          min-versions-to-keep: 1
+      - name: housekeeping
+        uses: vlaurin/action-ghcr-prune@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          organization: ${{ github.repository_owner }}
+          container: candidate
+          dry-run: true # Dry-run first, then change to `false`
+          older-than: 1
+          keep-last: 2
+          untagged: true
         
       - name: return when fail
         if: ${{ failure() }}

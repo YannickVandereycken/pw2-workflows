@@ -11,35 +11,35 @@ jobs:
   testrun:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-          cache: 'maven'
-  # Step that runs the tests
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -DskipTests
-      - name: Build Dockerfile 
-        run: docker build . --file=.github/DockerTest -t cicd:test #This is the dockerfile that will be used for testing, it's literally just coping the war into a tomcat image and running it, probably not the best way to do it but it works
-      - name: Run Dockerfile
-        run: docker run -d -p 8080:8080 cicd:test
-      - name: Run tests
-        run: xvfb-run mvn test
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          junit_files: "target/surefire-reports/**/*.xml"
-      - name: Upload artifacts
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: Tested War
-          path: target/*.war
-          retention-days: 1
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: '11'
+  #         cache: 'maven'
+  # # Step that runs the tests
+  #     - name: Build with Maven
+  #       run: mvn -B package --file pom.xml -DskipTests
+  #     - name: Build Dockerfile 
+  #       run: docker build . --file=.github/DockerTest -t cicd:test #This is the dockerfile that will be used for testing, it's literally just coping the war into a tomcat image and running it, probably not the best way to do it but it works
+  #     - name: Run Dockerfile
+  #       run: docker run -d -p 8080:8080 cicd:test
+  #     - name: Run tests
+  #       run: xvfb-run mvn test
+  #     - name: Publish Test Results
+  #       uses: EnricoMi/publish-unit-test-result-action@v2
+  #       if: always()
+  #       with:
+  #         junit_files: "target/surefire-reports/**/*.xml"
+  #     - name: Upload artifacts
+  #       if: ${{ always() }}
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: Tested War
+  #         path: target/*.war
+  #         retention-days: 1
       - name: return when tests pass
         if: ${{ success() }}
         run: |
