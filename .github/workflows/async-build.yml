@@ -32,6 +32,7 @@ jobs:
 
   build-candidate:
     needs: changes
+    if: ${{ needs.changes.outputs.changed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/build-candidate.yml@main
     secrets: inherit
     with:
