@@ -24,7 +24,7 @@ jobs:
         with:
           files: "src/main/java/util/Secret.java"
       - name: Check if Secret exists
-        if: steps.check_files.outputs.files_exists == 'true' ## if Secret.java does not exist!
+        if: steps.check_files.outputs.files_exists == 'false' ## if Secret.java does not exist!
         # Only runs if all of the files exists
         run: |
           echo "::error file=src/main/java/util/Secret.java, title=Secret.java file is missing ::Missing Secret.java file, tests will fail"

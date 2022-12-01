@@ -33,13 +33,13 @@ jobs:
         if: always()
         with:
           junit_files: "target/surefire-reports/**/*.xml"
-      - name: Upload artifacts
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: Tested War
-          path: target/*.war
-          retention-days: 1
+      # - name: Upload artifacts
+      #   if: ${{ always() }}
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: Tested War
+      #     path: target/*.war
+      #     retention-days: 1
       - name: return when tests pass
         if: ${{ success() }}
         run: |
