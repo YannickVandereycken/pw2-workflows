@@ -5,7 +5,7 @@ on:
     outputs:
       changed:
         description: 'True if passed, false otherwise'
-        value: ${{ jobs.test.outputs.passed }}
+        value: ${{ jobs.relabel.outputs.passed }}
     inputs:
       image-name:
         description: 'The base name of the image'
@@ -19,7 +19,7 @@ on:
         type: string
       
 jobs:
-  build-image:
+  relabel:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -53,12 +53,6 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
 
-      - name: cleaning up 
-        uses: actions/delete-package-versions@v3
-        with: 
-          package-name: 'candidate'
-          min-versions-to-keep: 3
-        
       - name: return when fail
         if: ${{ failure() }}
         run: |

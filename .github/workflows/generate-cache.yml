@@ -4,10 +4,10 @@ on:
     outputs:
       changed:
         description: 'True if passed, false otherwise'
-        value: ${{ jobs.test.outputs.passed }}
+        value: ${{ jobs.generate-cache.outputs.passed }}
 
 jobs:
-  testrun:
+  generate-cache:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

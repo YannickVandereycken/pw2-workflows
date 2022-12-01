@@ -3,9 +3,9 @@ name: Running selenium tests
 on:
   workflow_call:
     outputs:
-      changed:
+      passed:
         description: 'True if tests passed, false otherwise'
-        value: ${{ jobs.test.outputs.passed }}
+        value: ${{ jobs.testrun.outputs.passed }}
 
 jobs:
   testrun:

@@ -5,7 +5,7 @@ on:
     outputs:
       changed:
         description: 'True if passed, false otherwise'
-        value: ${{ jobs.test.outputs.passed }}
+        value: ${{ jobs.build-image.outputs.passed }}
     inputs:
       image-name:
         description: 'The base name of the image'
@@ -51,6 +51,7 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
+            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:latest
 
       - name: return when tests fail
         if: ${{ failure() }}

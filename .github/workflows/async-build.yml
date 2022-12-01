@@ -37,14 +37,20 @@ jobs:
     with:
       image-name: candidate
       tag: ${{ github.sha }}
-  
-  cleanup-registry:
-    name: cleaning up and pushing
+
+  publish-candidate:
+    name: relabeling and pushing target
     needs: [testing, build-candidate]
-    if: ${{ needs.changes.outputs.changed == 'true' }}
-    uses: Projectweek-2022-2023/workflows/.github/workflows/cleanup-image.yml@main
+    if: ${{ needs.testing.outputs.passed == 'true' }}
+    uses: Projectweek-2022-2023/workflows/.github/workflows/relabel-image.yml@main
     secrets: inherit
     with:
       image-name: ${{ inputs.image-name }}
       tag: ${{ inputs.tag }}
-  
+
+  housekeeping:
+    name: housekeeping
+    needs: [build-candidate, changes]
+    if: ${{ needs.changes.outputs.changed == 'true' }}
+    uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
+    secrets: inherit
