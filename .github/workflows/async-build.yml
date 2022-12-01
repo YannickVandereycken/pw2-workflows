@@ -1,5 +1,6 @@
 name: Async build
 # This checks if we can compile and then tests/builds at the same time. If build and test pass, it pushes the image. 'Harder' but faster overall.
+# should be run when we're pushing to main, fully tests everything and pushes the image
 on:
   workflow_call:
     outputs:

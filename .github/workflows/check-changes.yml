@@ -23,9 +23,9 @@ jobs:
         uses: andstor/file-existence-action@v2
         with:
           files: "src/main/java/util/Secret.java"
-      - name: Check if Secret exists
+      - name: if it doesn't exist, die
         if: steps.check_files.outputs.files_exists == 'false' ## if Secret.java does not exist!
-        # Only runs if all of the files exists
+        # Only runs if Secret.java does not exist
         run: |
           echo "::error file=src/main/java/util/Secret.java, title=Secret.java file is missing ::Missing Secret.java file, tests will fail"
           exit 1

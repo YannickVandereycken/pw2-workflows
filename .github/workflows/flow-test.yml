@@ -1,0 +1,20 @@
+#This is run when a PR is made
+name: Testrun
+on:
+  workflow_call:
+    outputs:
+      changed:
+        description: 'True if pipeline passes'
+        value: ${{ jobs.changes.outputs.changed }}
+jobs:
+  changes:
+    name: Preflight checks
+    uses: Projectweek-2022-2023/workflows/.github/workflows/check-changes.yml@main
+    secrets: inherit
+  
+  testing:
+    needs: changes
+    if: ${{ needs.changes.outputs.changed == 'true' }}
+    uses: Projectweek-2022-2023/workflows/.github/workflows/test-mvn.yml@main
+    secrets: inherit
+    
