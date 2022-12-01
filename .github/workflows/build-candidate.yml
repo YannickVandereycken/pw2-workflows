@@ -1,5 +1,5 @@
-name: Building and pushing image
-
+name: Building and pushing canidate image
+#this literally is the same as the build-image.yml file, but without pushing to latest
 on:
   workflow_call:
     outputs:
@@ -50,7 +50,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:latest
             ghcr.io/${{ env.REPO }}/${{ inputs.image-name }}:${{ inputs.tag }}
 
       - name: return when tests fail

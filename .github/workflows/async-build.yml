@@ -32,16 +32,15 @@ jobs:
 
   build-candidate:
     needs: changes
-    uses: Projectweek-2022-2023/workflows/.github/workflows/build-image.yml@main
+    uses: Projectweek-2022-2023/workflows/.github/workflows/build-candidate.yml@main
     secrets: inherit
     with:
       image-name: candidate
       tag: ${{ github.sha }}
 
   publish-candidate:
-    name: relabeling and pushing target
+    name: relabeling and pushing candidate to latest
     needs: [testing, build-candidate]
-    if: ${{ needs.testing.outputs.passed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/relabel-image.yml@main
     secrets: inherit
     with:
