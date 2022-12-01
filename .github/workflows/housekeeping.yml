@@ -17,13 +17,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - run: echo "REPO_NAME=${{ github.event.repository.name }}" >> $GITHUB_ENV
 
       - name: housekeeping
         uses: bots-house/ghcr-delete-image-action@v1.0.0
         with:
           # NOTE: at now only orgs is supported
           owner: ${{ github.repository_owner }}
-          name: candidate
+          name: ${{ env.REPO_NAME }}/candidate
           # NOTE: using Personal Access Token
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{github.sha}}
