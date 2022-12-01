@@ -41,7 +41,7 @@ jobs:
   publish-candidate:
     name: relabeling and pushing target
     needs: [testing, build-candidate]
-    if: always()
+    if: ${{ needs.testing.outputs.passed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/relabel-image.yml@main
     secrets: inherit
     with:
@@ -50,7 +50,7 @@ jobs:
 
   housekeeping:
     name: housekeeping
-    needs: [build-candidate, changes]
-    if: ${{ needs.changes.outputs.changed == 'true' }}
+    needs: [testing, build-candidate, publish-candidate]
+    if: ${{ needs.build-candidate.outputs.changed == 'true' }}
     uses: Projectweek-2022-2023/workflows/.github/workflows/housekeeping.yml@main
     secrets: inherit
