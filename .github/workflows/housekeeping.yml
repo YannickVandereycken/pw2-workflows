@@ -25,7 +25,7 @@ jobs:
       - name: echo dockerfile
         run: |
           echo "FROM hello-world:latest" >Dockerfile
-          echo "LABEL org.opencontainers.image.description this is the hello-world image, don't use me" >>Dockerfile
+          echo 'LABEL "org.opencontainers.image.description"="this is the hello-world image dont use me"' >>Dockerfile
 
       - name: literally just replace the candidate image with hello-world
       # yeah so apparantly we can't delete stuff with the token, we're just gonna push a hello-world image over it since it's only 11kb
