@@ -30,17 +30,17 @@ jobs:
           echo "::error file=src/main/java/util/Secret.java, title=Secret.java file is missing ::Missing Secret.java file, tests will fail"
           exit 1
           
-      - name: Checking src folder for changes
-        id: src-check
-        uses: tj-actions/changed-files@v34
-        with:
-            files: |
-              src/**
-              .github/**
-              pom.xml
+#      - name: Checking src folder for changes
+ #       id: src-check
+  #      uses: tj-actions/changed-files@v34
+   #     with:
+    #        files: |
+     #         src/**
+      #        .github/**
+       #       pom.xml
 
       - name: Send results into workflow outputs
         id: report
         run: |
           echo "${{ github.ref_name }}"
-          echo "::set-output name=changed::${{ steps.src-check.outputs.any_changed }}"
+          echo "::set-output name=changed::true" 
