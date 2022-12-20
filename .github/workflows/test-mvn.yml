@@ -30,7 +30,7 @@ jobs:
         run: xvfb-run mvn test
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: failure()
         with:
           junit_files: "target/surefire-reports/**/*.xml"
       # - name: Upload artifacts
