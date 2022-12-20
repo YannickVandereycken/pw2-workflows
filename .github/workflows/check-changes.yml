@@ -37,6 +37,7 @@ jobs:
             files: |
               src/**
               .github/**
+              pom.xml
 
       - name: Send results into workflow outputs
         id: report
